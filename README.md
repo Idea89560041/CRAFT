@@ -1,74 +1,46 @@
 # CRAFT
 
-PyTorch implementation of **CRAFT: Coupled Reversible Affine Flow Translation for Unpaired Multimodal MRI Harmonization**.
+Official PyTorch implementation of **CRAFT: Coupled Reversible Affine Flow Translation for Unpaired Multimodal MRI Harmonization**.
 
+![CRAFT framework overview](docs/figures/overall.jpg)
 
+## Overview
 
-![IHF-Harmony overview](docs/figures/ihf_harmony_overview.png)
+CRAFT is an unpaired multimodal MRI harmonization framework built around a Coupled Reversible Affine Flow (CRAF). It uses target-domain latent features and Artifact-aware Normalization (AAN) to harmonize source MRI scans while preserving anatomical content.
 
-## Code Structure
+## Installation
 
-| Path | Description |
-| --- | --- |
-| `main.py` | Training/evaluation entry point. |
-| `configs/config.yaml` | Default GPU-oriented training config. |
-| `configs/debug.yaml` | Small CPU debug config. |
-| `model/network/hf.py` | IHF-Harmony model, IHF block, and AAN module. |
-| `model/losses/VGG_loss.py` | Anatomy and artifact consistency losses. |
-| `model/trainers/hf_trainer.py` | Training, evaluation, checkpointing, AMP, DDP. |
-| `model/utils/dataset.py` | Unpaired MRI slice dataset. |
-| `tools/smoke_test.py` | Minimal forward/backward test. |
-
-## Environment
+Install the project dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-For CUDA training, install the PyTorch version matching your GPU driver first.
+For GPU training, install the PyTorch build that matches your CUDA environment before installing the remaining dependencies.
 
-The VGG loss expects the encoder weights at:
+The perceptual losses require pretrained VGG encoder weights at:
 
 ```text
 model/losses/vgg_model/vgg_normalised.pth
 ```
 
-This prepared upload folder includes the file so the smoke test can run
-directly. If you remove it from a public release, place the same file back at
-this path before training or evaluation.
+The weights are included in this repository. If they are removed from a redistributed copy, restore them at the path above before training or evaluation.
 
-## Data
+## Quick Start
 
-The demo split uses 30 local slices per site:
-
-| Site | Train | Test |
-| --- | ---: | ---: |
-| HUH | 24 | 6 |
-| COI | 24 | 6 |
-
-Expected layout:
-
-```text
-datasets/
-  HUH/train.txt
-  HUH/test.txt
-  COI/train.txt
-  COI/test.txt
-  image/siteHUH_slice/
-  image/siteCOI_slice/
-```
-
-For full experiments, place the complete image folders under `datasets/image/`
-and regenerate the four list files.
-
-## Run
-
-CPU smoke test:
+Run a minimal forward-and-backward smoke test on CPU:
 
 ```bash
 python tools/smoke_test.py --config configs/debug.yaml --device cpu
+```
+
+Run the one-step debug configuration:
+
+```bash
 python main.py --config configs/debug.yaml --device cpu
 ```
+
+## Training
 
 Single-GPU training:
 
@@ -82,30 +54,17 @@ Multi-GPU training:
 torchrun --nproc_per_node=4 main.py --config configs/config.yaml
 ```
 
-Evaluation:
+Training artifacts, checkpoints, and evaluation results are written to the output directory configured in the selected YAML file.
+
+## Evaluation
+
+Evaluate a trained checkpoint:
 
 ```bash
-python main.py --config configs/config.yaml --eval-only --load-path output_dir/harmonization/model_save/final.ckpt.pth.tar
+python main.py \
+  --config configs/config.yaml \
+  --eval-only \
+  --load-path output_dir/harmonization/model_save/final.ckpt.pth.tar
 ```
 
-This project is built on and adapted from
-[HierarchyFlow](https://github.com/WeichenFan/HierarchyFlow), with the original
-CV image-to-image translation framework modified for unpaired medical MRI
-harmonization.
-
-## Citation
-
-If you use this code, please cite:
-
-```bibtex
-@article{zhu2026ihf,
-  title={IHF-Harmony: Multi-Modality Magnetic Resonance Images Harmonization using Invertible Hierarchy Flow Model},
-  author={Zhu, Pengli and Zhu, Yitao and Pang, Haowen and Qiu, Anqi},
-  journal={arXiv preprint arXiv:2602.21536},
-  year={2026}
-}
-```
-
-This implementation is based on
-[WeichenFan/HierarchyFlow](https://github.com/WeichenFan/HierarchyFlow) and
-extends it to the MRI harmonization setting.
+This implementation is based on [WeichenFan/HierarchyFlow](https://github.com/WeichenFan/HierarchyFlow) and extends it to the MRI harmonization setting.
