@@ -1,12 +1,12 @@
 # CRAFT
 
-Official PyTorch implementation of **CRAFT: Coupled Reversible Affine Flow Translation for Unpaired Multimodal MRI Harmonization**.
+Official PyTorch implementation of **CRAFT: Coupled Reversible Affine Flow with Target Guidance for Unpaired Multimodal MRI Acquisition Translation**.
 
 ![CRAFT framework overview](docs/figures/overall.jpg)
 
 ## Overview
 
-CRAFT is an unpaired multimodal MRI harmonization framework built around a Coupled Reversible Affine Flow (CRAF). It uses target-domain latent features and Artifact-aware Normalization (AAN) to harmonize source MRI scans while preserving anatomical content.
+CRAFT is an unpaired multimodal MRI acquisition translation framework that combines coupled reversible affine flows with target-guided acquisition-aware normalization to incorporate target acquisition characteristics while preserving source anatomy.
 
 ## Installation
 
