@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-This repository is a project-specific implementation for IHF-Harmony. It keeps
+This repository is a project-specific implementation for CRAFT. It keeps
 the relationship to the source implementation explicit.
 
 ## Related Method
@@ -18,6 +18,5 @@ consistency losses.
 ## VGG Encoder Weights
 
 `model/losses/vgg_model/vgg_normalised.pth` is used as a fixed VGG feature
-encoder for perceptual/statistical loss computation. It is intentionally ignored
-by git to keep the public repository small. Place the weight file at that path
-before training or evaluation.
+encoder for perceptual/statistical loss computation. The weights are included
+in this repository. Retain the file at that path before training or evaluation.
