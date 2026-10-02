@@ -4,7 +4,7 @@ PyTorch implementation of **CRAFT: Coupled Reversible Affine Flow with Target Gu
 
 CRAFT translates MRI acquisition characteristics using unpaired source images and target references while preserving source anatomy. It combines coupled reversible affine flows (CRAF) with acquisition-aware normalization (AAN), guided by anatomical and acquisition consistency objectives.
 
-![Figure 1: Overview of CRAFT](docs/figures/overall.jpg)
+![Figure 1: Overview of CRAFT](docs/figures/figure1.png)
 
 *Figure 1. CRAFT framework, coupled reversible affine flow (CRAF), and acquisition-aware normalization (AAN). Target acquisition statistics guide source-feature modulation and image reconstruction.*
 
